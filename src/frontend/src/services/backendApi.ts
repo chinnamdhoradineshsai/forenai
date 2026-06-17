@@ -61,7 +61,7 @@ export interface MalwareScanResult {
   logs: string[];
 }
 
-const BACKEND_URL = "http://localhost:8000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 let isOnlineCached: boolean | null = null;
 let lastCheckTime = 0;

@@ -12,7 +12,7 @@ sys.path.append(os.path.dirname(__file__))
 from recovery.recovery_manager import RecoveryManager
 from recovery.hash_verifier import HashVerifier
 
-PORT = 8000
+PORT = int(os.environ.get("PORT", 8000))
 manager = RecoveryManager()
 
 class ForensicHTTPServerHandler(BaseHTTPRequestHandler):

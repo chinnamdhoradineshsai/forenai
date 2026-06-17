@@ -1,6 +1,6 @@
-import { ForensicAlert } from "./evidence";
+import { ForensicAlert } from './evidence';
 
-export interface AIAnalysisResult {
+export interface AIAnalysisResult { 
   summary: string;
   riskScore: number;
   threatLevel: string;

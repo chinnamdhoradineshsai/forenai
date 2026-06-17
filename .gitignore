@@ -10,3 +10,12 @@ dist/
 .idea/
 forensic_recovery.db
 uploads/
+
+# Python cache and bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.env
+.env.local
