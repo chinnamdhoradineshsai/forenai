@@ -1,0 +1,22 @@
+{
+  "overview": "ForenAI is a professional AI-powered Android mobile forensics dashboard for investigating extracted device evidence. It features a dark cybersecurity theme with glassmorphism cards, 6 forensic analysis pages, mock USB extraction simulation, AI risk classification, evidence visualization, and automated PDF report generation.",
+  "features": [
+    "Dashboard with KPI cards and USB extraction simulation",
+    "Device information panel with Android device metadata",
+    "Evidence viewer with 6 tabs: SMS, Call Logs, Apps, Media, Browser, Location",
+    "AI Analysis panel with 87% risk score visualization and threat alerts",
+    "Timeline and analytics with charts and suspicious event tracking",
+    "Report generator with PDF export using jsPDF"
+  ],
+  "category": "productivity",
+  "tags": [
+    "forensics",
+    "cybersecurity",
+    "android",
+    "ai",
+    "dashboard",
+    "dark-theme",
+    "glassmorphism"
+  ],
+  "last_updated": "2026-05-16T05:35:34.415Z"
+}

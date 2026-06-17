@@ -1,0 +1,3 @@
+-- seed.sql: Initial Seed Data for ForenAI database
+-- All cases, devices, and forensic evidence are created dynamically in the application.
+-- This file is kept clean to allow a blank slate for production/testing setup.

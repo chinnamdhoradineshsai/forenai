@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/assets/fonts/SpaceGrotesk.woff2") format("woff2");
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "General Sans";
+  src: url("/assets/fonts/GeneralSans.woff2") format("woff2");
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/assets/fonts/GeistMono.woff2") format("woff2");
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-family: "Plus Jakarta Sans";
+  src: url("/assets/fonts/PlusJakartaSans.woff2") format("woff2");
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+    /* Light mode – off-white backdrop */
+    --background: 0.96 0.008 245;
+    --foreground: 0.18 0.025 245;
+    --card: 1 0 0;
+    --card-foreground: 0.18 0.025 245;
+    --popover: 1 0 0;
+    --popover-foreground: 0.18 0.025 245;
+    --primary: 0.55 0.2 200;
+    --primary-foreground: 0.98 0 0;
+    --secondary: 0.5 0.18 280;
+    --secondary-foreground: 0.98 0 0;
+    --muted: 0.93 0.01 245;
+    --muted-foreground: 0.55 0.02 245;
+    --accent: 0.55 0.2 200;
+    --accent-foreground: 0.98 0 0;
+    --destructive: 0.6 0.25 30;
+    --destructive-foreground: 0.98 0 0;
+    --border: 0.88 0.01 245;
+    --input: 0.88 0.01 245;
+    --ring: 0.55 0.2 200;
+    --success: 0.72 0.15 140;
+    --warning: 0.8 0.17 75;
+    --chart-1: 0.55 0.2 200;
+    --chart-2: 0.5 0.18 280;
+    --chart-3: 0.72 0.15 140;
+    --chart-4: 0.6 0.25 30;
+    --chart-5: 0.77 0.15 220;
+    --sidebar: 0.98 0.008 245;
+    --sidebar-foreground: 0.18 0.025 245;
+    --sidebar-primary: 0.55 0.22 265;
+    --sidebar-primary-foreground: 0.98 0 0;
+    --sidebar-accent: 0.93 0.01 245;
+    --sidebar-accent-foreground: 0.25 0.02 245;
+    --sidebar-border: 0.88 0.01 245;
+    --sidebar-ring: 0.55 0.22 265;
+  }
+
+  .dark {
+    --background: 0.08 0.015 280;
+    --foreground: 0.92 0.08 200;
+    --card: 0.14 0.02 270;
+    --card-foreground: 0.92 0.08 200;
+    --popover: 0.16 0.022 270;
+    --popover-foreground: 0.92 0.08 200;
+    --primary: 0.58 0.22 195;
+    --primary-foreground: 0.08 0.015 280;
+    --secondary: 0.52 0.2 280;
+    --secondary-foreground: 0.92 0.08 200;
+    --muted: 0.2 0.018 270;
+    --muted-foreground: 0.7 0.04 200;
+    --accent: 0.55 0.2 200;
+    --accent-foreground: 0.08 0.015 280;
+    --destructive: 0.62 0.28 28;
+    --destructive-foreground: 0.98 0 0;
+    --border: 1 0 0 / 12%;
+    --input: 1 0 0 / 18%;
+    --ring: 0.58 0.22 195;
+    --success: 0.72 0.15 140;
+    --warning: 0.8 0.17 75;
+    --chart-1: 0.58 0.22 195;
+    --chart-2: 0.52 0.2 280;
+    --chart-3: 0.72 0.15 140;
+    --chart-4: 0.62 0.28 28;
+    --chart-5: 0.77 0.15 220;
+    --sidebar: 0.12 0.018 280;
+    --sidebar-foreground: 0.92 0.08 200;
+    --sidebar-primary: 0.58 0.22 195;
+    --sidebar-primary-foreground: 0.08 0.015 280;
+    --sidebar-accent: 1 0 0 / 8%;
+    --sidebar-accent-foreground: 0.92 0.08 200;
+    --sidebar-border: 1 0 0 / 12%;
+    --sidebar-ring: 0.58 0.22 195;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "General Sans", system-ui, sans-serif;
+  }
+
+  .dark body {
+    background: linear-gradient(
+      135deg,
+      oklch(0.08 0.015 280) 0%,
+      oklch(0.1 0.018 275) 100%
+    );
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-xl border border-cyan-400/15 rounded-xl;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0
+      rgba(0, 255, 255, 0.08), inset 0 0 20px rgba(0, 255, 255, 0.02);
+  }
+  .glass-card-light {
+    @apply bg-white/70 backdrop-blur-md border border-white/50 rounded-xl;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), inset 0 1px 0
+      rgba(255, 255, 255, 0.9);
+  }
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  }
+  .pulse-ring {
+    animation: pulseRing 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  }
+  @keyframes pulseRing {
+    0% {
+      box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.6);
+    }
+    70% {
+      box-shadow: 0 0 0 12px rgba(0, 255, 255, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(0, 255, 255, 0);
+    }
+  }
+  .truck-anim {
+    transition: cx 1.4s linear, cy 1.4s linear;
+  }
+  @keyframes markerPulse {
+    0%,
+    100% {
+      opacity: 1;
+      r: 6;
+    }
+    50% {
+      opacity: 0.4;
+      r: 10;
+    }
+  }
+  .marker-pulse {
+    animation: markerPulse 1.8s ease-in-out infinite;
+  }
+
+  .forensic-badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-accent/15 text-accent border border-accent/30;
+  }
+}
+
+.form-input {
+  @apply w-full px-3 py-2 text-sm rounded-xl border border-white/10 bg-white/5 text-foreground focus:outline-none focus:border-cyan-500/40 focus:ring-1 focus:ring-cyan-500/20 transition;
+}
