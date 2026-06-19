@@ -257,10 +257,7 @@ export function DeviceInfoPage({
 
       if (simulateUsb) {
         // Simulated Dynamic Telemetry Update
-        const randomDigits = Array.from({ length: 13 }, () =>
-          Math.floor(Math.random() * 10),
-        ).join("");
-        const dynamicImei = `35${randomDigits}`;
+        const dynamicImei = device.imei || "IMEI unavailable (restricted by device)";
         // Randomise realistic storage values (64–512 GB total, 30–85% used)
         const storageSizes = [64, 128, 256, 512];
         const totalStorage =

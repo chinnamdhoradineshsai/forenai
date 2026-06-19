@@ -76,10 +76,7 @@ export function AcquisitionPage({
 
     // Build/generate fallback data if WebUSB was not authorized or failed
     if (!syncResult) {
-      const randomDigits = Array.from({ length: 13 }, () =>
-        Math.floor(Math.random() * 10),
-      ).join("");
-      const dynamicImei = device.imei || `35${randomDigits}`;
+      const dynamicImei = device.imei || "IMEI unavailable (restricted by device)";
 
       syncResult = {
         model: device.model && !device.model.includes("Mock") ? device.model : "Android Device",

@@ -18,6 +18,7 @@ import {
   History,
   Binary,
   Bug,
+  Brain,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useUsbConnectionState } from "../hooks/useUsbConnectionState";
@@ -43,7 +44,8 @@ export type Page =
   | "hashverify"
   | "recovery"
   | "classification"
-  | "malware";
+  | "malware"
+  | "assistant";
 
 interface NavItem {
   id: Page;
@@ -69,6 +71,7 @@ const navSections: NavSection[] = [
   {
     title: "Analysis & Recovery",
     items: [
+      { id: "assistant", label: "AI Forensic Assistant", icon: Brain },
       { id: "recovery", label: "Data Recovery", icon: History },
       { id: "classification", label: "AI File Classifier", icon: Binary },
       { id: "malware", label: "Malware Detection", icon: Bug },

@@ -521,11 +521,7 @@ export const webadbService = {
       }
 
       if (!imei) {
-        // Generate a dynamic, randomized 15-digit IMEI starting with "35" to ensure real-world dynamic variety
-        const randomDigits = Array.from({ length: 13 }, () =>
-          Math.floor(Math.random() * 10),
-        ).join("");
-        imei = `35${randomDigits}`;
+        imei = "IMEI unavailable (restricted by device)";
       }
 
       // 6. Query third-party packages
@@ -952,128 +948,22 @@ export const webadbService = {
 
       // Generate dynamic browser history fallback if empty
       if (browser.length === 0) {
-        const packageNames = apps.map((a) => a.packageName);
-        const hasSignal = packageNames.some(
-          (p) => p.includes("securesms") || p.includes("signal"),
-        );
-        const hasProxy = packageNames.some(
-          (p) => p.includes("proxy") || p.includes("vpn"),
-        );
-        const hasUpdater = packageNames.some(
-          (p) => p.includes("updater") || p.includes("sys"),
-        );
-
-        const generatedHistory = [
-          {
-            url: "https://www.google.com/search?q=forensic+analysis+tools",
-            title: "forensic analysis tools - Google Search",
-            browser: "Chrome",
-            visitCount: 4n,
-            minsAgo: 15,
-            isSuspicious: false,
-          },
-          {
-            url: "https://github.com/yume-chan/ya-webadb",
-            title: "yume-chan/ya-webadb: WebADB client library",
-            browser: "Chrome",
-            visitCount: 8n,
-            minsAgo: 40,
-            isSuspicious: false,
-          },
-        ];
-
-        if (hasSignal) {
-          generatedHistory.push(
-            {
-              url: "https://signal.org/download/",
-              title: "Download Signal for Android",
-              browser: "Chrome",
-              visitCount: 3n,
-              minsAgo: 120,
-              isSuspicious: false,
-            },
-            {
-              url: "https://www.google.com/search?q=how+to+verify+signal+safety+number",
-              title: "how to verify signal safety number - Google Search",
-              browser: "Chrome Incognito",
-              visitCount: 2n,
-              minsAgo: 130,
-              isSuspicious: true,
-            },
-          );
-        }
-
-        if (hasProxy || hasUpdater) {
-          generatedHistory.push(
-            {
-              url: "https://www.torproject.org/download",
-              title: "Download Tor Browser",
-              browser: "Chrome",
-              visitCount: 6n,
-              minsAgo: 180,
-              isSuspicious: true,
-            },
-            {
-              url: "https://darknet.to/marketplace",
-              title: "Marketplace — DarkNet Portal",
-              browser: "Chrome Incognito",
-              visitCount: 11n,
-              minsAgo: 240,
-              isSuspicious: true,
-            },
-            {
-              url: "https://www.google.com/search?q=how+to+wipe+android+phone+remotely",
-              title: "how to wipe android phone remotely - Google Search",
-              browser: "Chrome Incognito",
-              visitCount: 5n,
-              minsAgo: 300,
-              isSuspicious: true,
-            },
-          );
-        }
-
-        // Add standard fallback sites if list is small
-        if (generatedHistory.length < 5) {
-          generatedHistory.push(
-            {
-              url: "https://www.wikipedia.org/",
-              title: "Wikipedia, the free encyclopedia",
-              browser: "Chrome",
-              visitCount: 14n,
-              minsAgo: 480,
-              isSuspicious: false,
-            },
-            {
-              url: "https://news.ycombinator.com/",
-              title: "Hacker News",
-              browser: "Chrome",
-              visitCount: 25n,
-              minsAgo: 600,
-              isSuspicious: false,
-            },
-          );
-        }
-
-        const now = Date.now();
-        browser = generatedHistory.map((item) => {
-          const timestamp = new Date(now - item.minsAgo * 60 * 1000)
-            .toISOString()
-            .replace("T", " ")
-            .substring(0, 16);
-          return {
-            url: item.url,
-            title: item.title,
-            visitCount: item.visitCount,
-            lastVisited: timestamp,
-            browser: item.browser,
-            isSuspicious: item.isSuspicious,
-          };
-        });
+        browser = [];
       }
 
-      // WhatsApp: only real device msgstore.db extraction produces chats.
-      // Never generate fake contacts.
+      // WhatsApp: check if com.whatsapp directory is accessible via run-as
       const whatsappChats: RealDeviceWhatsAppChat[] = [];
+      try {
+        const hasWhatsApp = apps.some((a) => a.packageName === "com.whatsapp");
+        if (hasWhatsApp) {
+          const result = await adb.subprocess.noneProtocol.spawnWaitText(
+            "run-as com.whatsapp ls"
+          );
+          console.log("WhatsApp directory query output via run-as:", result);
+        }
+      } catch (err) {
+        console.warn("Failed to query WhatsApp directory via run-as:", err);
+      }
 
       return {
         model,

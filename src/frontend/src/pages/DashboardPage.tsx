@@ -227,10 +227,7 @@ export function DashboardPage({
     // When USB extraction fails, only preserve real device hardware info.
     // Never generate fake contacts, SMS, calls, or browser entries.
     if (!syncResult) {
-      const randomDigits = Array.from({ length: 13 }, () =>
-        Math.floor(Math.random() * 10),
-      ).join("");
-      const dynamicImei = device.imei || `35${randomDigits}`;
+      const dynamicImei = device.imei || "IMEI unavailable (restricted by device)";
 
       syncResult = {
         model: device.model && !device.model.includes("Mock") ? device.model : "Android Device",

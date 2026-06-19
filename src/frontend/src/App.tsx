@@ -34,6 +34,7 @@ import { HashVerificationPage } from "./pages/HashVerificationPage";
 import { DataRecoveryPage } from "./pages/DataRecoveryPage";
 import { AIFileClassificationPage } from "./pages/AIFileClassificationPage";
 import { MalwareDetectionPage } from "./pages/MalwareDetectionPage";
+import { AIAssistantPage } from "./pages/AIAssistantPage";
 import { authService } from "./services/authService";
 import { deviceService } from "./services/deviceService";
 import type { User } from "./types/user";
@@ -276,6 +277,13 @@ export default function App() {
               {currentPage === "recovery" && <DataRecoveryPage />}
               {currentPage === "classification" && <AIFileClassificationPage />}
               {currentPage === "malware" && <MalwareDetectionPage />}
+              {currentPage === "assistant" && (
+                <AIAssistantPage
+                  caseId={selectedCaseId}
+                  deviceId={selectedDeviceId}
+                  investigatorName={currentUser?.name}
+                />
+              )}
             </motion.div>
           </AnimatePresence>
           <Footer />

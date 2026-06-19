@@ -1,12 +1,13 @@
 import { useActor } from "@caffeineai/core-infrastructure";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Folder, Loader2, Plus, Search } from "lucide-react";
-import { useState } from "react";
+import { Folder, FolderSearch, Loader2, Plus, Search, Smartphone } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { createActor } from "../backend";
 import { CaseCard } from "../components/CaseCard";
 import { CaseCreationModal } from "../components/CaseCreationModal";
 import type { Page } from "../components/Sidebar";
+import { supabase } from "../lib/supabase";
 import { caseService } from "../services/caseService";
 
 interface CasesPageProps {
@@ -24,11 +25,71 @@ export function CasesPage({
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [stats, setStats] = useState({
+    totalCases: 0,
+    totalDevices: 0,
+    totalEvidence: 0,
+  });
 
   const { data: cases = [], isLoading } = useQuery({
     queryKey: ["cases", !!actor],
     queryFn: () => caseService.getAllCases(actor),
   });
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const { count: casesCount } = await supabase
+          .from("cases")
+          .select("*", { count: "exact", head: true });
+
+        const { count: devicesCount } = await supabase
+          .from("devices")
+          .select("*", { count: "exact", head: true });
+
+        const { count: smsCount } = await supabase
+          .from("sms_records")
+          .select("*", { count: "exact", head: true });
+
+        const { count: callCount } = await supabase
+          .from("call_records")
+          .select("*", { count: "exact", head: true });
+
+        const { count: appCount } = await supabase
+          .from("app_records")
+          .select("*", { count: "exact", head: true });
+
+        const { count: mediaCount } = await supabase
+          .from("media_files")
+          .select("*", { count: "exact", head: true });
+
+        const { count: browserCount } = await supabase
+          .from("browser_records")
+          .select("*", { count: "exact", head: true });
+
+        const { count: locationCount } = await supabase
+          .from("location_records")
+          .select("*", { count: "exact", head: true });
+
+        const totalEvidence =
+          (smsCount || 0) +
+          (callCount || 0) +
+          (appCount || 0) +
+          (mediaCount || 0) +
+          (browserCount || 0) +
+          (locationCount || 0);
+
+        setStats({
+          totalCases: casesCount || 0,
+          totalDevices: devicesCount || 0,
+          totalEvidence,
+        });
+      } catch (err) {
+        console.error("Failed to fetch global stats from Supabase:", err);
+      }
+    }
+    fetchStats();
+  }, [cases]);
 
   const createCaseMutation = useMutation({
     mutationFn: (newCase: {
@@ -110,6 +171,54 @@ export function CasesPage({
           <Plus size={14} />
           Initialize Case
         </button>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {/* Total Cases */}
+        <div className="glass-card p-5 flex items-center justify-between border border-white/5 bg-white/[0.01]">
+          <div className="space-y-1">
+            <span className="text-[10px] text-muted-foreground font-semibold tracking-wider uppercase">
+              Total Forensic Cases
+            </span>
+            <h3 className="text-2xl font-bold text-foreground font-mono">
+              {stats.totalCases}
+            </h3>
+          </div>
+          <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20">
+            <Folder className="text-cyan-400" size={18} />
+          </div>
+        </div>
+
+        {/* Total Devices */}
+        <div className="glass-card p-5 flex items-center justify-between border border-white/5 bg-white/[0.01]">
+          <div className="space-y-1">
+            <span className="text-[10px] text-muted-foreground font-semibold tracking-wider uppercase">
+              Target Devices Registered
+            </span>
+            <h3 className="text-2xl font-bold text-foreground font-mono">
+              {stats.totalDevices}
+            </h3>
+          </div>
+          <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20">
+            <Smartphone className="text-indigo-400" size={18} />
+          </div>
+        </div>
+
+        {/* Total Evidence */}
+        <div className="glass-card p-5 flex items-center justify-between border border-white/5 bg-white/[0.01]">
+          <div className="space-y-1">
+            <span className="text-[10px] text-muted-foreground font-semibold tracking-wider uppercase">
+              Carved Evidence Items
+            </span>
+            <h3 className="text-2xl font-bold text-foreground font-mono">
+              {stats.totalEvidence}
+            </h3>
+          </div>
+          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+            <FolderSearch className="text-emerald-400" size={18} />
+          </div>
+        </div>
       </div>
 
       {/* Search */}
